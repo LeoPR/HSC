@@ -26,3 +26,11 @@ aqui o 01 preenche onde 01 existe com 1, o 0 é incognita (pode ser 10 11 ou 00)
 
 repito o processo até não comprimir nada mais
 
+quero que os bit resituais sejam instruções, preciso criar uma linguagem simples em que envolte os bits frequentes para mapear os dados
+e o bit residual entre em modo de programação para passar mais instruções, vou dar outro exemplo
+
+raw_data 1001100110010101010101010111
+raw_data 10 01 10 01 10 01 01 01 01 01 01 01 01 11
+
+
+00
