@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /c/Users/leona/OneDrive/Documents/Projects/Acadêmicos/HSC/docs/pesquisa/*.md)",
+      "WebSearch",
+      "WebFetch(domain:mattmahoney.net)",
+      "Bash(curl -s \"https://corpus.canterbury.ac.nz/\")"
+    ]
+  }
+}

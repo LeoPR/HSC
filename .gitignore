@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+.env
+
+# Resultados e dados grandes
+datasets/silesia/
+datasets/calgary/
+datasets/canterbury/
+datasets/ltcb/
+
+# Gerados
+results/*.csv
+!results/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/settings.json

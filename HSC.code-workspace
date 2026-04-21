@@ -1,0 +1,27 @@
+{
+    "folders": [
+        {
+            "name": "HSC — Hilbert Space Compression (umbrella)",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.wordWrap": "on",
+        "files.exclude": {
+            "**/__pycache__": true,
+            "**/*.pyc": true,
+            ".venv": true
+        },
+        "explorer.fileNesting.enabled": true,
+        "explorer.fileNesting.patterns": {
+            "*.md": "${capture}.log, ${capture}.csv"
+        }
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-python.python",
+            "yzhang.markdown-all-in-one",
+            "bierner.markdown-mermaid"
+        ]
+    }
+}
