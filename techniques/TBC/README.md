@@ -33,18 +33,45 @@ Total bruto: 19 bits vs. 28 originais (sem header, sem recursão)
 
 ---
 
+## Taxonomia de máquinas
+
+O TBC é uma família de ISAs de complexidade crescente. Cada máquina é um programa executado pelo decodificador. Ver [`machines.md`](machines.md) para a definição completa.
+
+| Máquina | ISA | Expressividade | Artefato |
+|---------|-----|----------------|----------|
+| **M0** | planos puros (sem opcodes) | bitplane coding | [`tbc.py`](tbc.py) |
+| **M1** | `LIT` / `REP` / `RAW` / `END` | RLE | [`m1.py`](m1.py) |
+| **M2** | M1 + `REF(offset, length)` | LZ77 | planejado |
+| **M3** | M2 + `DEF` / `CALL` / `LOOP` | grammar-based | planejado |
+
 ## Estado da implementação
 
 | Artefato | Status |
 |---|---|
-| Descrição informal do algoritmo | [`compression_logic_03.md`](compression_logic_03.md) |
-| Encoder/decoder Python (nível 1) | [`tbc.py`](tbc.py) — funcional |
-| Round-trip lossless verificado | [`test_tbc.py`](test_tbc.py) — passa em dados aleatórios, controlados e degenerados |
-| Recursão sobre planos | Planejada |
-| Codificação entrópica dos planos | Planejada (entropia de Shannon ou zlib nos bitmasks) |
-| Serialização binária | Planejada — hoje o payload é um objeto Python |
-| Benchmark vs. baselines (zlib, bz2) | Planejado |
-| Análise de complexidade | Planejada |
+| Descrição conceitual do método | [`compression_logic_03.md`](compression_logic_03.md) |
+| Taxonomia formal das máquinas | [`machines.md`](machines.md) |
+| M0 — encoder/decoder + round-trip | [`tbc.py`](tbc.py) + [`test_tbc.py`](test_tbc.py) |
+| M1 — encoder/decoder + round-trip | [`m1.py`](m1.py) + [`test_m1.py`](test_m1.py) |
+| Benchmark consolidado | [`bench_machines.py`](bench_machines.py) |
+| M2 — back-reference (REF) | Planejado |
+| M3 — subprogramas (DEF/CALL/LOOP) | Planejado |
+| Serialização binária final padronizada | Planejado |
+| Recursão TBC sobre planos | Planejado |
+
+## Resultados iniciais (canterbury/xargs.1, 4227 bytes)
+
+| Método | Bytes | Razão |
+|--------|-------|-------|
+| M0 (k=1) | 4232 | 1.00x |
+| M0 (k=2) | 4378 | 0.97x |
+| M1 (k=2) | 7081 | 0.60x |
+| M1 (k=8) | 4324 | 0.98x |
+| zlib -9  | 1736 | 2.43x |
+| bz2 -9   | 1762 | 2.40x |
+
+**Leitura:** M0 puro é neutro (rearranjo sem entropia). M1 (RLE) não comprime texto estruturado — domina o caso com runs (3.88x em 1000 'A' com k=8). Para superar texto será necessário M2 (back-reference, classe LZ).
+
+Reproduzir: `python bench_machines.py --all`.
 
 ---
 
