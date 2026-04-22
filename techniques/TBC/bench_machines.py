@@ -18,6 +18,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 import tbc as m0
 import m1
+import m2
 
 HERE = Path(__file__).parent
 PROJECT_ROOT = HERE.parent.parent
@@ -35,6 +36,12 @@ def _m0_size_bytes(data: bytes, k: int) -> tuple[int, bool]:
 def _m1_size_bytes(data: bytes, k: int) -> tuple[int, bool]:
     payload = m1.encode(data, k=k)
     ok = m1.decode(payload) == data
+    return payload.size_bytes(), ok
+
+
+def _m2_size_bytes(data: bytes, k: int) -> tuple[int, bool]:
+    payload = m2.encode(data, k=k)
+    ok = m2.decode(payload) == data
     return payload.size_bytes(), ok
 
 
@@ -58,6 +65,12 @@ def bench_file(path: Path) -> None:
         size, ok = _m1_size_bytes(data, k)
         ratio = len(data) / size if size else float("inf")
         print(f"M1  k={k:<11d}  {size:>10,}  {ratio:>6.2f}x  {'OK' if ok else 'X'}")
+
+    # M2 so em k=4 e k=8 (k<4 fica muito lento no scan linear)
+    for k in [4, 8]:
+        size, ok = _m2_size_bytes(data, k)
+        ratio = len(data) / size if size else float("inf")
+        print(f"M2  k={k:<11d}  {size:>10,}  {ratio:>6.2f}x  {'OK' if ok else 'X'}")
 
     # Baselines classicos
     for name, fn in [("zlib -9", lambda d: zlib.compress(d, 9)),
